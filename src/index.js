@@ -44,13 +44,14 @@ function sumWithDefaults(a, b = 100) {
  */
 
 function returnFnResult(fn) {
-  function fn(x = 2) {
-     return x
-  };
   return fn();
 }
 
-// var fn = returnFnResult();
+// function fn1() {
+//   return 0
+// }
+
+// returnFnResult(fn1)
 
 /*
  Задание 4:
