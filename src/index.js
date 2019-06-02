@@ -17,19 +17,21 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-    if((array.length == 0) || !(array.isArray(array))) {
+    if ((array.length == 0) || !(array instanceof Array)) {
         throw new Error('empty array');
-    }
-    else if(typeof (fn) !== 'function') {
+    } else if (typeof (fn) !== 'function') {
         throw new Error('fn is not a function');
     }
     
-    for(let i = 0;- i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (fn(array[i]) == false) {
+            fn(array[i]);
+
             return false;
         }
-        return true;
     }
+
+    return true;
 }
 
 /*
@@ -49,21 +51,19 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
-    if((array.length == 0) || !(array.isArray(array))) {
+    if ((array.length == 0) || !(array instanceof Array)) {
         throw new Error('empty array');
-}
-    else if(typeof (fn) !== 'function') {
+    } else if (typeof (fn) !== 'function') {
         throw new Error('fn is not a function');
-}
+    }
 
-    for(let i = 0;- i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (fn(array[i]) == true) {
             return true;
         }
-        else {
-            return false;
-        }
-}
+    }
+
+    return false;
 }
 
 /*
@@ -78,17 +78,19 @@ function isSomeTrue(array, fn) {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn, ...args) {
-    if(typeof (fn) !== 'function') {
+    if (typeof (fn) !== 'function') {
         throw new Error('fn is not a function');
-}
-    var array = [];
-    try {
-        for(let i = 0; i < args.length; i++) {
-            fn(args[i])
-        }
-    } catch (e) {
-        array.push(args[i])
     }
+    var array = [];
+
+    for (var i = 0; i < args.length; i++) {
+        try {
+            fn(args[i]);
+        } catch (e) {
+            array.push(args[i]);
+        }
+    }
+
     return array;
 }
 
@@ -113,20 +115,26 @@ function calculator(number = 0) {
     if (!isFinite(number)) {
         throw new Error('number is not a number');
     }
-
     var obj = {
+
         sum: (...args) => args.reduce((a, b) => a + b, number),
         dif: (...args) => args.reduce((a, b) => a - b, number),
         div: function(...args) {
-            if ((a == 0) || (b == 0)) {
-                throw new Error('division by 0';)
-            } else {
-                args.reduce((a, b) => a / b, number)
-            }
-          },
+            let division = (a, b) => {
+
+                if ((a == 0) || (b == 0)) {
+                    throw new Error('division by 0');
+                }
+                
+                return a / b;
+            };
+
+            return args.reduce(division, number);
+        },
         mul: (...args) => args.reduce((a, b) => a * b, number),
 
     }
+
     return obj;
 }
 
