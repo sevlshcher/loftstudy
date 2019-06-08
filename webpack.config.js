@@ -38,11 +38,31 @@ const html = files['.hbs']
 
 if (!html.length || !files['.hbs'].find(file => file.name === 'index')) {
     html.push(new HtmlPlugin({
-        title: 'index',
-        template: 'index.hbs',
-        chunks: ['index']
+        title: 'Main Homework',
+        template: 'main.hbs',
+        chunks: ['main']
     }));
 }
+
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+module.exports = {
+  optimization: {
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
+      })
+    ]
+  }
+};
 
 module.exports = {
     entry: entries,
