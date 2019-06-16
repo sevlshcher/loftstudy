@@ -43,7 +43,6 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-// функция выводит информацию о куках в таблицу
 function updateTable() {
     let cookiesObj = getCookies();
 
@@ -60,7 +59,6 @@ function updateTable() {
         }
     }
 }
-// функция отдает объект с данными о куках в паре {name : value}, если куков нет => вернет пустой объект
 function getCookies() {
 
     if (document.cookie) {
@@ -83,7 +81,6 @@ function getCookies() {
 
     return {};         
 }
-// функция добавляет куки взяв данные из формы
 function setCookies() {
     let name = addNameInput.value||'empty',
         value = addValueInput.value||'empty';
@@ -91,13 +88,11 @@ function setCookies() {
     document.cookie = `${name}=${value}; expires=${date}`;
     var date = new Date(1000).toUTCString();
 }
-// функция удаляет куки по name и value 
 function deleteCookie(name, value) {
     let expires = new Date(new Date().getTime()-1000).toUTCString();
     
     document.cookie = `${name}=${value}; expires=${expires}`;
 }
-// функция выводит наличие подстроки(substr) в строке(str)
 function isThere(substrUpCase = '', strUpCase = '') {
     let substr = substrUpCase.toLowerCase(),
         str = strUpCase.toLowerCase();
@@ -105,23 +100,18 @@ function isThere(substrUpCase = '', strUpCase = '') {
     return str.indexOf(substr) < 0 ? false : true;
 }
 
-// при загрузке страницы выведутся все куки
 updateTable();
 
 filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
     updateTable();
 });
 
 addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
     setCookies();
-    // addValueInput.value = '';
-    // addNameInput.value = '';
     updateTable();
 
 });
-// обрабатывается нажатие на кнопку удалить
+
 listTable.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         deleteCookie(e.target.dataset.name, e.target.dataset.value);
